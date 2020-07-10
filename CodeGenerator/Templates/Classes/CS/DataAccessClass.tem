@@ -1,0 +1,182 @@
+﻿using System;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+using System.Collections;
+
+
+namespace DataKernal
+{
+	public class __TableName
+	{
+		//Private Variables////////////////////////////////////////////////////////////////////////
+		SqlConnection con__TableName;
+		SqlCommand com__TableName;
+		string strConnectionString  = string.Empty;
+		SqlDataAdapter da__TableName;
+		DataSet ds__TableName;
+		int intRecords;
+		///////////////////////////////////////////////////////////////////////////////////////////
+
+
+		//Constructor//////////////////////////////////////////////////////////////////////////////
+		public __TableName(string strConnString)
+        {
+			strConnectionString = strConnString;
+			con__TableName = new SqlConnection(strConnectionString);
+			com__TableName = new SqlCommand();
+			da__TableName = new SqlDataAdapter();
+			ds__TableName = new DataSet();
+		}//end constructor
+    
+		public __TableName()
+        {
+			strConnectionString = ConfigurationSettings.AppSettings["ConnectionString"].ToString();
+			con__TableName = new SqlConnection(strConnectionString);
+			com__TableName = new SqlCommand();
+			da__TableName = new SqlDataAdapter();
+			ds__TableName = new DataSet();
+		}
+		///////////////////////////////////////////////////////////////////////////////////////////
+
+		//Private Methods///////////////////////////////////////////////////////////////////////////
+		private void ConnectAndExecute(string strCommandText, ArrayList objParameterList)
+		{
+			con__TableName.Open();
+			com__TableName.Connection = con__TableName;
+			com__TableName.CommandText = strCommandText;
+			//Adding parameters if required
+			if (objParameterList.Count > 0) 
+			{
+				for (int intCounter = 0; intCounter < objParameterList.Count; intCounter++)
+				{
+					SqlParameter objParameter = new SqlParameter();
+					objParameter = (SqlParameter) objParameterList[intCounter];
+					com__TableName.Parameters.AddWithValue(objParameter.ParameterName, objParameter.Value);
+				}
+			}
+			com__TableName.CommandType = CommandType.StoredProcedure;
+			da__TableName.SelectCommand = com__TableName;
+			da__TableName.Fill(ds__TableName);
+			con__TableName.Close();
+		}
+		
+		private void SetError(string strErrorMessage)
+		{
+			DataColumn colErrorMessage = new DataColumn("ErrorMessage");
+			DataTable dtErrorTable = new DataTable();
+			dtErrorTable.Columns.Add(colErrorMessage);
+			DataRow drErrorRow = dtErrorTable.NewRow();
+			drErrorRow[0] = strErrorMessage;
+			dtErrorTable.Rows.Add(drErrorRow);
+			ds__TableName.Tables.Add(dtErrorTable);
+		}
+
+		public DataSet Select__TableName()
+		{
+			try
+			{
+				ConnectAndExecute("__TableNameSelectAll", new ArrayList()); //no parameter will send to stored procedure
+				return ds__TableName;
+			}
+			catch (Exception ex) 
+			{
+				SetError(ex.Message);
+				return ds__TableName;
+			}//end try
+		}//end function
+
+		public DataSet Select__TableName(int int__PK)
+		{
+			try
+			{
+				//parameter setting
+				ArrayList objParameterList = new ArrayList();
+				SqlParameter objParameter = new SqlParameter();
+				objParameter.ParameterName = "@__PK";
+				objParameter.Value = int__PK;
+				objParameterList.Add(objParameter);
+				//end parameter setting
+			
+				ConnectAndExecute("Get__TableNameByID", objParameterList);
+				return ds__TableName;
+			}
+			catch (Exception ex)
+			{
+				SetError(ex.Message);
+				return ds__TableName;
+			}
+		}
+		
+		public DataSet InsertUpdate__TableName(__ParametersList)
+		{
+			try
+			{
+				//parameter setting
+				ArrayList objParameterList = new ArrayList();
+				SqlParameter objParameter;
+				__AttachedParametersList
+				//end parameter setting
+			
+				ConnectAndExecute("InsertUpdate__TableName", objParameterList);
+				return ds__TableName;
+			}
+			catch (Exception ex)
+			{
+				SetError(ex.Message);
+				return ds__TableName;
+			}
+		}
+
+		public DataSet Delete__TableName(int int__PK)
+		{
+			try
+			{
+				//parameter setting
+				ArrayList objParameterList = new ArrayList();
+				SqlParameter objParameter = new SqlParameter();
+				objParameter.ParameterName = "@__PK";
+				objParameter.Value = int__PK;
+				objParameterList.Add(objParameter);
+				//end parameter setting
+			
+				ConnectAndExecute("DeleteByID__TableName", objParameterList);
+				return ds__TableName;
+			}
+			catch (Exception ex)
+			{
+				SetError(ex.Message);
+				return ds__TableName;
+			}
+		}
+    
+		public DataSet Delete__TableName()
+		{
+			try
+			{
+				ConnectAndExecute("DeleteAll__TableName", new ArrayList()); //no parameter will send to stored procedure
+				return ds__TableName;
+			}
+			catch (Exception ex)
+			{
+				SetError(ex.Message);
+				return ds__TableName;
+			}
+		}
+    
+		public DataSet __TableNameTruncate()
+        {
+			try
+			{
+				ConnectAndExecute("__TableNameTruncate", new ArrayList()); //no parameter will send to stored procedure
+				return ds__TableName;
+			}
+			catch (Exception ex)
+			{
+				SetError(ex.Message);
+				return ds__TableName;
+			}
+		}
+		///////////////////////////////////////////////////////////////////////////////////////////
+	}
+}

@@ -1,0 +1,163 @@
+﻿using System;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+using System.Collections;
+
+
+namespace DataKernal
+{
+	public class __TableName
+	{
+		//Private Variables////////////////////////////////////////////////////////////////////////
+		SqlConnection con__TableName;
+		SqlCommand com__TableName;
+		string strConnectionString  = string.Empty;
+		SqlDataAdapter da__TableName;
+		DataSet ds__TableName;
+		int intRecords;
+		///////////////////////////////////////////////////////////////////////////////////////////
+
+
+		//Constructor//////////////////////////////////////////////////////////////////////////////
+		public __TableName(string strConnString)
+        {
+			strConnectionString = strConnString;
+			con__TableName = new SqlConnection(strConnectionString);
+			com__TableName = new SqlCommand();
+			da__TableName = new SqlDataAdapter();
+			ds__TableName = new DataSet();
+		}//end constructor
+    
+		public __TableName()
+        {
+			strConnectionString = ConfigurationManager.AppSettings["ConnectionString"].ToString();
+			con__TableName = new SqlConnection(strConnectionString);
+			com__TableName = new SqlCommand();
+			da__TableName = new SqlDataAdapter();
+			ds__TableName = new DataSet();
+		}
+		///////////////////////////////////////////////////////////////////////////////////////////
+
+		//Private Methods///////////////////////////////////////////////////////////////////////////
+		private void ConnectAndExecute(string strCommandText)
+		{
+			con__TableName.Open();
+			com__TableName.Connection = con__TableName;
+			com__TableName.CommandText = strCommandText;
+			
+			com__TableName.CommandType = CommandType.StoredProcedure;
+			da__TableName.SelectCommand = com__TableName;
+			da__TableName.Fill(ds__TableName);
+			con__TableName.Close();
+		}
+		
+		private void SetError(string strErrorMessage)
+		{
+			DataColumn colErrorMessage = new DataColumn("ErrorMessage");
+			DataTable dtErrorTable = new DataTable();
+			dtErrorTable.Columns.Add(colErrorMessage);
+			DataRow drErrorRow = dtErrorTable.NewRow();
+			drErrorRow[0] = strErrorMessage;
+			dtErrorTable.Rows.Add(drErrorRow);
+			ds__TableName.Tables.Add(dtErrorTable);
+		}
+
+		public DataSet Select__TableName()
+		{
+			try
+			{
+				ConnectAndExecute("__TableNameSelectAll"); //no parameter will send to stored procedure
+				return ds__TableName;
+			}
+			catch (Exception ex) 
+			{
+				SetError(ex.Message);
+				return ds__TableName;
+			}//end try
+		}//end function
+
+		public DataSet Select__TableName(int int__PK)
+		{
+			try
+			{
+				//parameter setting
+				com__TableName.Parameters.AddWithValue("__PK", int__PK);
+				//end parameter setting
+			
+				ConnectAndExecute("Get__TableNameByID");
+				return ds__TableName;
+			}
+			catch (Exception ex)
+			{
+				SetError(ex.Message);
+				return ds__TableName;
+			}
+		}
+		
+		public DataSet InsertUpdate__TableName(__ParametersList)
+		{
+			try
+			{
+				//parameter setting
+				__AttachedParametersList
+				//end parameter setting
+			
+				ConnectAndExecute("InsertUpdate__TableName");
+				return ds__TableName;
+			}
+			catch (Exception ex)
+			{
+				SetError(ex.Message);
+				return ds__TableName;
+			}
+		}
+
+		public DataSet Delete__TableName(int int__PK)
+		{
+			try
+			{
+				//parameter setting
+				com__TableName.Parameters.AddWithValue("__PK", int__PK);
+				//end parameter setting
+			
+				ConnectAndExecute("DeleteByID__TableName");
+				return ds__TableName;
+			}
+			catch (Exception ex)
+			{
+				SetError(ex.Message);
+				return ds__TableName;
+			}
+		}
+    
+		public DataSet Delete__TableName()
+		{
+			try
+			{
+				ConnectAndExecute("DeleteAll__TableName"); //no parameter will send to stored procedure
+				return ds__TableName;
+			}
+			catch (Exception ex)
+			{
+				SetError(ex.Message);
+				return ds__TableName;
+			}
+		}
+    
+		public DataSet __TableNameTruncate()
+        {
+			try
+			{
+				ConnectAndExecute("__TableNameTruncate"); //no parameter will send to stored procedure
+				return ds__TableName;
+			}
+			catch (Exception ex)
+			{
+				SetError(ex.Message);
+				return ds__TableName;
+			}
+		}
+		///////////////////////////////////////////////////////////////////////////////////////////
+	}
+}

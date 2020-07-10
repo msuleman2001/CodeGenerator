@@ -1,0 +1,85 @@
+﻿using System;
+using System.Data;
+
+namespace LogicKernal
+{
+	public class __TableName
+	{
+		public static DataTable GetAll__TableName()
+		{
+			try
+			{
+				DataKernal.__TableName obj__TableName =  new DataKernal.__TableName();
+				return obj__TableName.Select__TableName().Tables[0];
+			}
+			catch (System.Exception ex)
+			{
+				return null;
+			}
+		}
+    
+		public static DataTable Get__TableNameByID(int int__PK)
+		{
+			try
+			{
+				DataKernal.__TableName obj__TableName = new DataKernal.__TableName();
+				return obj__TableName.Select__TableName(int__PK).Tables[0];
+			}
+			catch (System.Exception ex)
+			{
+				return null;
+			}
+		}
+    
+		public static int InsertUpdate__TableName(BusinessEntities.__TableName obj__TableName)
+		{
+			try
+			{
+				DataKernal.__TableName objD__TableName = new DataKernal.__TableName();
+				return (int)objD__TableName.InsertUpdate__TableName(__ObjectPropertiesList).Tables[0].Rows[0][0];
+			}
+			catch (System.Exception ex)
+			{
+				return 0;
+			}
+		}
+
+		public static int Delete__TableName(int int__PK)
+		{
+			try
+			{
+				DataKernal.__TableName obj__TableName = new DataKernal.__TableName();
+				return (int)obj__TableName.Delete__TableName(int__PK).Tables[0].Rows[0][0];
+			}
+			catch (System.Exception ex)
+			{
+				return 0;
+			}
+		}
+		public static int Delete__TableName()
+		{
+			try
+			{
+				DataKernal.__TableName obj__TableName = new DataKernal.__TableName();
+				return (int)obj__TableName.Delete__TableName().Tables[0].Rows[0][0];
+			}
+			catch (System.Exception ex)
+			{
+				return 0;
+			}
+		}
+    
+		public static int Truncate__TableName()
+		{
+			try
+			{
+				DataKernal.__TableName obj__TableName = new DataKernal.__TableName();
+				return (int)obj__TableName.__TableNameTruncate().Tables[0].Rows[0][0];
+			}
+			catch (System.Exception ex)
+			{
+				return 0;
+			}
+		}
+	}
+}

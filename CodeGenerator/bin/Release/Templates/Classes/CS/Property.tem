@@ -1,0 +1,11 @@
+﻿public __DataType __PropertyName
+{
+	get
+	{
+		return __VariableName;
+	}
+	set
+	{
+		__VariableName = value;
+	}
+}

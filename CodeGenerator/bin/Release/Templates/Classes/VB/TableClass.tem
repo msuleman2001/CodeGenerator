@@ -1,0 +1,15 @@
+﻿Public Class __TableName
+
+#Region "Private Variables"
+
+	__PrivateVariablesList
+	
+#End Region
+
+#Region "Public Properties"
+
+	__PropertiesList
+	
+#End Region
+
+End Class

@@ -1,0 +1,85 @@
+﻿using System;
+using System.Data;
+
+namespace LogicKernal
+{
+	public class __TableName
+	{
+		public static DataTable GetAll__TableName()
+		{
+			try
+			{
+				DataKernal.__TableName obj__TableName =  new DataKernal.__TableName();
+				return obj__TableName.Select__TableName().Tables[0];
+			}
+			catch (System.Exception ex)
+			{
+				return null;
+			}
+		}
+    
+		public static DataTable Get__TableNameByID(int int__PK)
+		{
+			try
+			{
+				DataKernal.__TableName obj__TableName = new DataKernal.__TableName();
+				return obj__TableName.Select__TableName(int__PK).Tables[0];
+			}
+			catch (System.Exception ex)
+			{
+				return null;
+			}
+		}
+    
+		public static DataSet InsertUpdate__TableName(BusinessEntities.__TableName obj__TableName)
+		{
+			try
+			{
+				DataKernal.__TableName objD__TableName = new DataKernal.__TableName();
+				return objD__TableName.InsertUpdate__TableName(__ObjectPropertiesList);
+			}
+			catch (System.Exception ex)
+			{
+				return null;
+			}
+		}
+
+		public static DataSet Delete__TableName(int int__PK)
+		{
+			try
+			{
+				DataKernal.__TableName obj__TableName = new DataKernal.__TableName();
+				return obj__TableName.Delete__TableName(int__PK);
+			}
+			catch (System.Exception ex)
+			{
+				return null;
+			}
+		}
+		public static DataSet Delete__TableName()
+		{
+			try
+			{
+				DataKernal.__TableName obj__TableName = new DataKernal.__TableName();
+				return obj__TableName.Delete__TableName();
+			}
+			catch (System.Exception ex)
+			{
+				return null;
+			}
+		}
+    
+		public static DataSet Truncate__TableName()
+		{
+			try
+			{
+				DataKernal.__TableName obj__TableName = new DataKernal.__TableName();
+				return obj__TableName.__TableNameTruncate();
+			}
+			catch (System.Exception ex)
+			{
+				return null;
+			}
+		}
+	}
+}

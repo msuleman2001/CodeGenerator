@@ -1,0 +1,11 @@
+﻿CREATE PROCEDURE Get__TableNameByID
+	@__PK NUMERIC(18, 0)
+AS
+BEGIN
+	SELECT 
+		__ColumnsList 
+	FROM 
+		__TableName 
+	WHERE 
+		__PK = @__PK
+END

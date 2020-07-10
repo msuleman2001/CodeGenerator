@@ -1,0 +1,63 @@
+Public Class __TableName
+
+#Region "Public Methods"
+
+    Public Shared Function GetAll__TableName() As DataTable
+        Try
+            Dim obj__TableName As New DataKernal.__TableName() 'Getting connection string from config file
+            Return obj__TableName.Select__TableName.Tables(0)
+        Catch ex As Exception
+            Return Nothing
+        End Try
+    End Function
+    
+    Public Shared Function Get__TableNameByID(ByVal int__PK As Integer) As DataTable
+        Try
+            Dim obj__TableName As New DataKernal.__TableName() 'Getting connection string from config file
+            Return obj__TableName.Select__TableName(int__PK).Tables(0)
+        Catch ex As Exception
+            Return Nothing
+        End Try
+    End Function
+    
+    Public Shared Function InsertUpdate__TableName(ByVal obj__TableName As BusinessEntities.__TableName) As Integer
+        Try
+            Dim objD__TableName As New DataKernal.__TableName()
+            Return objD__TableName.InsertUpdate__TableName(__ObjectPropertiesList)
+        Catch ex As Exception
+            Return 0
+        End Try
+    End Function
+
+    Public Shared Function Delete__TableName(ByVal int__PK As Integer) As Integer
+        Try
+            Dim obj__TableName As New DataKernal.__TableName()
+            Return obj__TableName.Delete__TableName(int__PK)
+        Catch ex As Exception
+            Return 0
+        End Try
+    End Function
+    
+    Public Shared Function Delete__TableName() As Integer
+        Try
+            Dim obj__TableName As New DataKernal.__TableName()
+            Return obj__TableName.Delete__TableName()
+        Catch ex As Exception
+            Return 0
+        End Try
+    End Function
+    
+    Public Shared Function Truncate__TableName() As Integer
+        Try
+            Dim obj__TableName As New DataKernal.__TableName()
+            Return obj__TableName.__TableNameTruncate()
+        Catch ex As Exception
+            Return 0
+        End Try
+    End Function
+    
+   
+
+#End Region
+
+End Class

@@ -1,0 +1,9 @@
+﻿Public Property __PropertyName As __DataType
+	Get
+		Return __VariableName
+	End Get
+	Set (ByVal value as __DataType)
+		__VariableName = value
+	End Set
+End Property
+

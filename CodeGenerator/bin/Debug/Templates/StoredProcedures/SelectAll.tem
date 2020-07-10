@@ -1,0 +1,6 @@
+﻿__CREATEORALTER PROCEDURE __TableNameSelectAll
+AS
+BEGIN
+    SELECT * FROM __TableName
+END
+GO

@@ -1,0 +1,50 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+using System.IO;
+
+namespace __SolutionName
+{
+    public partial class __FormName : Form
+    {
+        public __FormName()
+        {
+            InitializeComponent();
+        }
+        
+         private void Books_Load(object sender, EventArgs e)
+        {
+
+        }//end__FormNameLoad Event
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+        
+       BusinessEntities.__TableName  obj__TableName AS = New BusinessEntities.__TableName();
+        
+		__ColumnsList
+		
+		if (BusinessLogic.__TableName.InsertUpdate__TableName(obj__TableName) > 0)
+			{
+		        MessageBox.show("RecordSaveSuccessfully");
+			}
+		    else
+			{
+		        MessageBox.show("Unable to save the record");
+			}
+
+        }//end btnSaveCommand
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+
+        }//end btnCloseCommand
+
+    }
+}

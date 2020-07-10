@@ -1,0 +1,136 @@
+Imports System.Data
+Imports System.Data.SqlClient
+Imports System.Configuration
+
+Public Class __TableName
+
+#Region "Private Variables"
+
+    Dim objConnection As SqlConnection
+    Dim objCommand As SqlCommand
+    Dim strConnectionString As String = String.Empty
+    Dim objDataAdapter As SqlDataAdapter
+    Dim ds__TableName As DataSet
+    Dim intRecords As Integer = 0
+
+#End Region
+
+#Region "Constructors"
+    Public Sub New(ByVal strConnString As String)
+        strConnectionString = strConnString
+        objConnection = New SqlConnection(strConnectionString)
+        objCommand = New SqlCommand
+        objDataAdapter = New SqlDataAdapter
+        ds__TableName = New DataSet
+    End Sub
+    
+    Public Sub New()
+        strConnectionString = ConfigurationManager.AppSettings("ConnectionString")
+        objConnection = New SqlConnection(strConnectionString)
+        objCommand = New SqlCommand
+        objDataAdapter = New SqlDataAdapter
+        ds__TableName = New DataSet
+    End Sub
+    
+#End Region
+
+#Region "Public Methods"
+
+    Public Function Select__TableName() As DataSet
+        Try
+            objConnection.Open()
+            objCommand.Connection = objConnection
+            objCommand.CommandText = "__TableNameSelectAll"
+            objCommand.CommandType = CommandType.StoredProcedure
+            objDataAdapter.SelectCommand = objCommand
+            objDataAdapter.Fill(ds__TableName)
+            objConnection.Close()
+            Return ds__TableName
+        Catch ex As Exception
+            Return Nothing
+        End Try
+    End Function
+
+    Public Function Select__TableName(ByVal int__PK As Integer) As DataSet
+        Try
+            objConnection.Open()
+            objCommand.Connection = objConnection
+            objCommand.CommandText = "Get__TableNameByID"
+            objCommand.Parameters.AddWithValue("@__PK", int__PK)
+            objCommand.CommandType = CommandType.StoredProcedure
+            objDataAdapter.SelectCommand = objCommand
+            objDataAdapter.Fill(ds__TableName)
+            objConnection.Close()
+            Return ds__TableName
+        Catch ex As Exception
+            Return Nothing
+        End Try
+    End Function
+
+    Public Function InsertUpdate__TableName(__ParametersList) As Integer
+        Try
+            objConnection.Open()
+            objCommand.Connection = objConnection
+            objCommand.CommandText = "InsertUpdate__TableName"
+            __AttachedParametersList
+            objCommand.CommandType = CommandType.StoredProcedure
+            
+            ObjDataAdapter.SelectCommand = ObjCommand
+            objConnection.Close()
+            Return intRecords
+        Catch ex As Exception
+            Return 0
+        End Try
+    End Function
+
+    Public Function Delete__TableName(ByVal int__PK As Integer) As Integer
+        Try
+            objConnection.Open()
+            objCommand.Connection = objConnection
+            objCommand.CommandText = "__TableNameSDeleteByID"
+            objCommand.Parameters.AddWithValue("@__PK", int__PK)
+            objCommand.CommandType = CommandType.StoredProcedure
+            intRecords = objCommand.ExecuteNonQuery()
+            objConnection.Close()
+            Return intRecords
+        Catch ex As Exception
+            Return 0
+        End Try
+    End Function
+    
+    Public Function Delete__TableName() As Integer
+        Try
+            objConnection.Open()
+            objCommand.Connection = objConnection
+            objCommand.CommandText = "__TableNameSDeleteAll"
+            objCommand.CommandType = CommandType.StoredProcedure
+            intRecords = objCommand.ExecuteNonQuery()
+            objConnection.Close()
+            Return intRecords
+        Catch ex As Exception
+            Return 0
+        End Try
+    End Function
+    
+    Public Function __TableNameTruncate() As Integer
+        Try
+            objConnection.Open()
+            objCommand.Connection = objConnection
+            objCommand.CommandText = "__TableNameTruncate"
+            objCommand.CommandType = CommandType.StoredProcedure
+            intRecords = objCommand.ExecuteNonQuery()
+            objConnection.Close()
+            Return 1
+        Catch ex As Exception
+            Return 0
+        End Try
+    End Function
+    
+  
+    
+    
+    
+
+#End Region
+
+End Class

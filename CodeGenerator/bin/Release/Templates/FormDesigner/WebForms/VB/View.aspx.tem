@@ -1,0 +1,26 @@
+﻿Imports System.Data.SqlClient
+Partial Public Class __FormName
+    Inherits System.Web.UI.Page
+
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        ''''''''''''''''''''' Populating Data Grid View'''''''''''''
+        Dim strCommandString As String = "select * from __FormName"
+        Dim strConnectionString As String = "Data Source =__ServerName; Initial Catalog = __SolutionName; Integrated Security = SSPI;"
+        Dim objConnection As Object = New SqlConnection(strConnectionString)
+        objConnection.Open()
+        Dim objDataAdapter As Object = New SqlDataAdapter()
+        objDataAdapter.SelectCommand = New SqlCommand(strCommandString, objConnection)
+        Dim objDataTable As Object = New DataTable()
+        objDataAdapter.Fill(objDataTable)
+        dgv__FormName.DataSource = objDataTable
+        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    End Sub
+
+    Protected Sub btnSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSave.Click
+
+    End Sub
+
+    Protected Sub btnClose_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClose.Click
+
+    End Sub
+End Class

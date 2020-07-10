@@ -1,0 +1,327 @@
+﻿using System;
+using System.IO;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+using Microsoft.Win32;
+using System.Data.Sql;
+using System.Data.SqlClient;
+
+namespace CodeGenerator
+{
+    public partial class frmCodeGenerator : Form
+    {
+        private SqlConnection conMaster;
+        private SqlCommand comMaster;
+        private SqlDataAdapter daMaster;
+        private DataTable dtMaster;
+        private List<DatabaseTable> table_list = new List<DatabaseTable>();
+        private List<Column> columns = new List<Column>();
+        private List<ModelClass> model_classes = new List<ModelClass>();
+        CodeGeneration objCodeGenerator;
+        string connection_string = "Data Source=__ServerName;Initial Catalog=__DBName;";
+        string sp_options = string.Empty;
+
+        public frmCodeGenerator()
+        {
+            InitializeComponent();
+        }
+
+        private void frmCodeGenerator_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                //////////////Finding SqlServer InstalledOn Network ///////
+                SqlDataSourceEnumerator de;
+                de = SqlDataSourceEnumerator.Instance;
+                DataTable dtServers = new DataTable();
+                dtServers = de.GetDataSources();
+
+                foreach (DataRow dr in dtServers.Rows)
+                    cmbServerList.Items.Add(dr["ServerName"].ToString());
+
+                if (cmbServerList.Items.Count > 0)
+                    cmbServerList.SelectedIndex = 0;
+                /////////////////////////////////////////////////////
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void cmbServerList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbServerList.Text != string.Empty)
+            {
+                string connection_string = "Data Source =" + cmbServerList.Text + "; Integrated Security =True;";
+                using (SqlConnection sql_connection = new SqlConnection(connection_string))
+                {
+                    try
+                    {
+                        sql_connection.Open();
+                        DataTable dtTablesList = sql_connection.GetSchema("Databases");
+                        sql_connection.Close();
+                        foreach (DataRow db_name in dtTablesList.Rows)
+                            cmbDatabaseList.Items.Add(db_name["Database_Name"].ToString());
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                } //end sqlConeection
+            } //end if
+        }
+
+        private void chkWindowAuthentication_CheckedChanged(object sender, EventArgs e)
+        {
+            txtUsername.Enabled = !chkWindowAuthentication.Checked;
+            txtPassword.Enabled = !chkWindowAuthentication.Checked;
+        }
+
+        private void chkSelectAllTable_CheckedChanged(object sender, EventArgs e)
+        {
+            foreach (ListViewItem item in lstTableList.Items)
+                item.Checked = chkSelectAllTable.Checked;
+            lstTableList.Enabled = !chkSelectAllTable.Checked;
+        }
+
+        private void btnSelectOutputFolder_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fbdOutputFolder = new FolderBrowserDialog();
+            if (fbdOutputFolder.ShowDialog() == DialogResult.OK)
+                txtOutputFolder.Text = fbdOutputFolder.SelectedPath + "\\GeneratedCodeDirectory";
+        }
+
+        private void btnConnect_Click(object sender, EventArgs e)
+        {
+            if (chkWindowAuthentication.Checked)
+                connection_string += "Integrated Security=True;";
+            else
+                connection_string += "username=" + txtUsername.Text + ";" + "pwd=" + txtPassword.Text;
+
+            connection_string = connection_string.Replace("__ServerName", cmbServerList.Text);
+            connection_string = connection_string.Replace("__DBName", cmbDatabaseList.Text);
+            txtConnectionString.Text = connection_string;
+            DataTable dtTables = ConnectDB(connection_string, "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE'");
+
+            lstTableList.Items.Clear();
+            foreach (DataRow rows_table in dtTables.Rows)
+            {
+                ListViewItem item_table = new ListViewItem();
+                DatabaseTable db_table = new DatabaseTable();
+                db_table.TableName = rows_table["TABLE_NAME"].ToString();
+                db_table.TableType = "BaseTable";
+                List<Column> columns = GetColumns(db_table);
+                db_table.PrimaryKey = columns[0].ColumnName;
+                db_table.Columns = columns;
+                table_list.Add(db_table);
+
+                item_table.Text = db_table.TableName;
+                lstTableList.Items.Add(item_table);
+            }
+            conMaster.Close();
+        }
+
+        private void lstTableList_MouseClick(object sender, MouseEventArgs e)
+        {
+            ConnectDB(txtConnectionString.Text, "sp_columns '" + lstTableList.FocusedItem.Text + "'");
+            txtColumnsList.Text = "";
+            foreach (DataRow row_column_list in dtMaster.Rows)
+                txtColumnsList.Text += row_column_list["COLUMN_NAME"].ToString() + ", " + row_column_list["TYPE_NAME"].ToString() + Environment.NewLine;
+
+        }
+
+        private DataTable ConnectDB(string connection_string, string command_text)
+        {
+            dtMaster = new DataTable();
+            conMaster = new SqlConnection(connection_string);
+            comMaster = new SqlCommand(command_text);
+            daMaster = new SqlDataAdapter();
+            if (conMaster.State == ConnectionState.Open)
+                conMaster.Close();
+            conMaster.Open();
+            comMaster.Connection = conMaster;
+            daMaster.SelectCommand = comMaster;
+            daMaster.Fill(dtMaster);
+            return dtMaster;
+        }
+
+        private void btnGenerate_Click(object sender, EventArgs e)
+        {
+            objCodeGenerator = new CodeGeneration(table_list, PublicEnums.LanguageOption.CSharp, sp_options);
+            //GenerateInternalDirectories();// generate folders for code
+            GenerateStoredProcedures(); //generate stored procedure
+            GenerateModelClasses();
+            //GenerateClasses();
+        }
+
+        private void SelectSPOptions(object sender, EventArgs e)
+        {
+            sp_options = "";
+            foreach (Control ctrl in gbStoredProcOptions.Controls)
+            {
+                CheckBox chkSPOption = (CheckBox)ctrl;
+                if (chkSPOption.Checked)
+                    sp_options += chkSPOption.Tag.ToString() + ",";
+            }
+
+            sp_options = sp_options.Remove(sp_options.LastIndexOf(","));
+        }
+
+        private void GenerateInternalDirectories()
+        {
+            
+            //string strStoredProcDirectoryPath = strProjectOutputDirectoryPath + @"\StoredProcedures";
+            //string strMVCDirectoryPath = (strProjectOutputDirectoryPath + @"\MVC");
+
+            ////string strVBClassesDirectory = strClassesDirectory + @"\VBClasses";
+            ////string strCSClassesDirectory = strClassesDirectory + @"\CSClasses";
+
+            //string strFormClassesDirectory = strProjectOutputDirectoryPath + @"\FormsClasses";
+
+            //string strWinFormClassesDirectory = strFormClassesDirectory + @"\WinForms";
+            //string strWebFormClassesDirectory = strFormClassesDirectory + @"\WebForms";
+
+            ////creating directories
+            //Directory.CreateDirectory(strStoredProcDirectoryPath);                      //stored procedure directory
+            //Directory.CreateDirectory(strMVCDirectoryPath);                             //MVC directory. parent of model, view and controller
+            //Directory.CreateDirectory(strMVCDirectoryPath + @"\Model");                 //model directory inside MVC directory
+            //Directory.CreateDirectory(strMVCDirectoryPath + @"\View");                  //view directory inside MVC directory
+            //Directory.CreateDirectory(strMVCDirectoryPath + @"\Controller");            //controller directory inside MVC directory
+
+            //txtGeneratorLog.SelectedText += Environment.NewLine + strStoredProcDirectoryPath + Environment.NewLine + DateTime.Now.ToString() + Environment.NewLine;
+
+            
+            
+        }
+
+        private void GenerateStoredProcedures()
+        {
+            string stored_procedures = objCodeGenerator.GenerateProcedures();
+            string sp_path = txtOutputFolder.Text + @"\" + cmbDatabaseList.Text + @"\" + cmbDatabaseList.Text + ".sql";
+            File.WriteAllText(sp_path, stored_procedures);
+            txtGeneratorLog.SelectedText += Environment.NewLine + "Stored Procedures Generated" + Environment.NewLine + DateTime.Now.ToString() + Environment.NewLine;
+        }
+
+        private void GenerateModelClasses()
+        {
+            string model_path = txtOutputFolder.Text + @"\" + "Model";
+            model_classes = objCodeGenerator.GenerateModelClasses();
+            foreach (ModelClass model_class in model_classes)
+                File.WriteAllText(model_path + "\\" + model_class.ClassName + ".cs", model_class.ClassCode);
+        }
+
+        private List<Column> GetColumns(DatabaseTable db_table)
+        {
+            DataTable dtColumns = ConnectDB(connection_string, "SP_COLUMNS " + db_table.TableName);
+            List<Column> columns = new List<Column>();
+            foreach (DataRow drColumn in dtColumns.Rows)
+            {
+                Column column = new Column();
+                column.ColumnName = drColumn["COLUMN_NAME"].ToString();
+                column.TableName = drColumn["TABLE_NAME"].ToString();
+                column.DataType = Convert.ToInt32(drColumn["DATA_TYPE"]);
+                column.TypeName = drColumn["TYPE_NAME"].ToString();
+                column.Precision = Convert.ToInt32(drColumn["PRECISION"]);
+                column.Length = Convert.ToInt32(drColumn["LENGTH"]);
+                column.NumericScale = Convert.ToString(drColumn["SCALE"]);
+                column.OrdinalPosition = Convert.ToInt32(drColumn["ORDINAL_POSITION"]);
+                if (drColumn["ORDINAL_POSITION"].ToString() == "1")
+                    column.IsPrimaryKey = true;
+                columns.Add(column);
+            }
+
+            return columns;
+        }
+
+        //private void GenerateClasses()
+        //{
+        //    try
+        //    {
+        //        if (rdbVB.Checked)
+        //            GenerateVBClass();
+        //        if (rdbCS.Checked)
+        //            GenerateCSClass();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message);
+        //    }
+        //}//EndFunc GenerateClasses
+
+        //private void GenerateVBClass()
+        //{
+        //    string strProjectOutputDirectory = txtOutputFolder.Text;
+        //    try
+        //    {
+        //        foreach (ListViewItem item_table in lstTableList.CheckedItems)
+        //        {
+        //            string strTable = item_table.Text;
+        //            DatabaseOperations objColumns = new DatabaseOperations(txtConnectionString.Text);
+        //            DataTable objColumnsList = objColumns.SelectColumns(strTable);
+        //            string strPK = objColumnsList.Rows[0]["COLUMN_NAME"].ToString();
+
+        //            VBCodeGenerator objVBCodeGen = new VBCodeGenerator(strProjectOutputDirectory, strTable, objColumnsList, strPK);
+        //            if (chkAllClasses.Checked || chkTablesClasses.Checked)
+        //                objVBCodeGen.GenerateVBTableClass();
+
+        //            txtGeneratorLog.SelectedText += strProjectOutputDirectory + @"TableClasses\" + strTable + ".vb" + System.DateTime.Now.ToString() + "\n\n";
+        //            if (chkAllClasses.Checked || chkDataAccessClasses.Checked)
+        //                objVBCodeGen.GenerateVBDataAccessClass();
+
+        //            txtGeneratorLog.SelectedText += strProjectOutputDirectory + @"DataAccessClasses\" + strTable + ".vb" + System.DateTime.Now.ToString() + "\n\n";
+        //            if (chkAllClasses.Checked || chkBusinessLogicClasses.Checked)
+        //                objVBCodeGen.GenerateVBBusinessLogicClass();
+
+        //            txtGeneratorLog.SelectedText += strProjectOutputDirectory + @"BusinessLogicClasses\" + strTable + ".vb" + System.DateTime.Now.ToString() + "\n\n";
+        //        }
+        //    }//end try
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message);
+        //    }//end catch
+        //}//end GenerateVbClasses
+
+        //private void GenerateCSClass()
+        //{
+        //    string strProjectOutputDirectory = txtOutputFolder.Text + "\\" + cmbDatabaseList.Text;
+        //    try
+        //    {
+        //        foreach (ListViewItem item_table in lstTableList.CheckedItems)
+        //        {
+        //            string strTable = item_table.Text; 
+        //            DatabaseOperations objColumns = new DatabaseOperations(txtConnectionString.Text);
+        //            DataTable objColumnsList = objColumns.SelectColumns(strTable);
+        //            string strPK = objColumnsList.Rows[0]["COLUMN_NAME"].ToString();
+        //            CSCodeGenerator objCSCodeGen = new CSCodeGenerator(strProjectOutputDirectory, strTable, objColumnsList, strPK);
+        //            if (chkAllClasses.Checked || chkTablesClasses.Checked)
+        //                objCSCodeGen.GenerateCSTableClass();
+
+        //            txtGeneratorLog.SelectedText += strProjectOutputDirectory + "\\" + cmbDatabaseList.Text + @"TableClasses\" + strTable + ".cs" + System.DateTime.Now.ToString() + "\n\n";
+        //            if (chkAllClasses.Checked || chkDataAccessClasses.Checked)
+        //                objCSCodeGen.GenerateCSDataAccessClass();
+
+        //            txtGeneratorLog.SelectedText += strProjectOutputDirectory + "\\" + cmbDatabaseList.Text + @"DataAccessClasses\" + strTable + ".cs" + System.DateTime.Now.ToString() + "\n\n";
+        //            if (chkAllClasses.Checked || chkBusinessLogicClasses.Checked)
+        //                objCSCodeGen.GenerateCSBusinessLogicClasses();
+
+        //            txtGeneratorLog.SelectedText += strProjectOutputDirectory + "\\" + cmbDatabaseList.Text + @"CSBusinessLogicClasses\" + strTable + ".cs" + System.DateTime.Now.ToString() + "\n\n";
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message);
+        //    }
+        //}//endFunc GenerateCsClasses
+
+        private void txtGeneratorLog_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            txtUsername.Text = ((int) e.KeyChar).ToString();
+        }
+    }
+}

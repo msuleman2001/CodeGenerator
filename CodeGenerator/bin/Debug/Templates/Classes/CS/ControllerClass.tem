@@ -1,0 +1,33 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+
+public class __TableNameController
+{
+	static __TableName obj__TableName = new __TableName();
+	public static List<__TableName> __TableNameSelectAll()
+	{
+		return obj__TableName.__TableNameSelectAll();
+	}
+	
+	public static __TableName __TableNameSelectByID(Int32 int__PK)
+	{
+		return obj__TableName.__TableNameSelectByID(int__PK);
+	}
+	
+	public static Int64 InsertUpdate__TableName(__TableName objIU__TableName)
+	{
+		Int64 new_id = objIU__TableName.InsertUpdate__TableName();
+		return new_id;
+	}
+	
+	public static void Delete__TableName(Int32 int__PK = 0)
+	{
+		obj__TableName.Delete__TableName(int__PK);
+	}
+	
+	public static void Truncate()
+	{
+		obj__TableName.Truncate();
+	}
+}

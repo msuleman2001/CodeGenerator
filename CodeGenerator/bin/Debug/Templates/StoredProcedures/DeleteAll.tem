@@ -1,0 +1,6 @@
+﻿__CREATEORALTER PROCEDURE __TableNameDeleteAll
+AS
+BEGIN
+    DELETE FROM __TableName
+END
+GO

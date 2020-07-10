@@ -1,0 +1,8 @@
+﻿__CREATEORALTER PROCEDURE __TableNameDeleteByID
+	@__PK NUMERIC(18, 0)
+AS
+BEGIN
+    DELETE FROM __TableName
+    WHERE __TableName.__PK = @__PK
+END
+GO

@@ -1,0 +1,24 @@
+Imports System.Data.SqlClient
+
+Public Class frm__FormName
+
+    Private Sub frm__FormName_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+    End Sub
+
+    Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
+	
+		Dim obj__TableName AS New BusinessEntities.__TableName
+		__ColumnsList
+		If BusinessLogic.__TableName.InsertUpdate__TableName(obj__TableName) > 0 Then
+			MsgBox("RecordSaveSuccessfully")
+		Else
+			MsgBox("Unable to save the record")
+		End If
+
+    End Sub
+
+    Private Sub btnClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClose.Click
+        Me.Close()
+    End Sub
+End Class

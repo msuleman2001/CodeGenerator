@@ -1,0 +1,33 @@
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+
+namespace __NameSpace
+{
+    public partial class MasterDetail : Form
+    {
+        public MasterDetail()
+        {
+            InitializeComponent();
+        }
+        
+         private void MasterDetail_Load(object sender, System.EventArgs e)
+        {
+
+        }
+        
+        public void ShowDataForGridView()
+        {
+            string strCommandString = "select * from __MasterDetailTblName";
+            string strConnectionString = "__ConnectionString";
+            SqlConnection objConnection = new SqlConnection(strConnectionString);
+            objConnection.Open();
+            SqlDataAdapter objDataAdapter = new SqlDataAdapter(strCommandString, objConnection);
+            DataTable objDataTable = new DataTable();
+            objDataAdapter.Fill(objDataTable);
+            dgvDetails.DataSource = objDataTable;
+        }//end Func ShowDataForGridView
+        
+        
+    }
+}

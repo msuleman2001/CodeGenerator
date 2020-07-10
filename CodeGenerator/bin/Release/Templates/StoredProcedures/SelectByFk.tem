@@ -1,0 +1,6 @@
+﻿CREATE Procedure Select__TableNameBy__FK
+	@__FK NUMERIC(18, 10)
+AS
+	BEGIN 
+	SELECT * FROM __TableName WHERE __FK = @__FK
+End

@@ -1,0 +1,137 @@
+namespace __SolutionName
+{
+    partial class MasterDetail
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.gbxMasterFields = new System.Windows.Forms.GroupBox();
+            this.gbxDetailFields = new System.Windows.Forms.GroupBox();
+
+            this.btnSearch = new System.Windows.Forms.Button();
+            this.dgvDetails = new System.Windows.Forms.DataGridView();
+            this.gbxMasterFields.SuspendLayout();
+            this.gbxDetailFields.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvDetails)).BeginInit();
+            this.SuspendLayout();
+
+
+		 __LableInitializer
+
+		 __TextBoxInitializer
+                        
+  	 this.SuspendLayout();
+
+
+
+		 __LableProperties
+            
+		 __TextBoxProperties
+
+
+
+
+
+
+            // 
+            // gbxMasterFields
+            // 
+            __AddLableControl
+
+            __AddTextBoxControl
+
+            this.gbxMasterFields.Controls.Add(this.btnSearch);                   
+            this.gbxMasterFields.Location = new System.Drawing.Point(13, 13);
+            this.gbxMasterFields.Name = "gbxMaster";
+            this.gbxMasterFields.Size = new System.Drawing.Size(659, 150);
+            this.gbxMasterFields.TabIndex = 0;
+            this.gbxMasterFields.TabStop = false;
+            // 
+            // gbxDetailFields
+            // 
+            this.gbxDetailFields.Controls.Add(this.dgvDetails);
+            this.gbxDetailFields.Location = new System.Drawing.Point(13, 169);
+            this.gbxDetailFields.Name = "gbxDetail";
+            this.gbxDetailFields.Size = new System.Drawing.Size(659, 263);
+            this.gbxDetailFields.TabIndex = 1;
+            this.gbxDetailFields.TabStop = false;
+           
+
+
+
+            // 
+            // btnSearch
+            // 
+            this.btnSearch.Location = new System.Drawing.Point(568, 77);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(75, 23);
+            this.btnSearch.TabIndex = 3;
+            this.btnSearch.Text = "Search";
+            this.btnSearch.UseVisualStyleBackColor = true;
+            // 
+            // dgvDetails
+            // 
+            this.dgvDetails.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvDetails.Location = new System.Drawing.Point(6, 19);
+            this.dgvDetails.Name = "dgvDetails";
+            this.dgvDetails.Size = new System.Drawing.Size(637, 227);
+            this.dgvDetails.TabIndex = 0;
+            // 
+            // MasterDetail
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(684, 444);
+            this.Controls.Add(this.gbxDetailFields);
+            this.Controls.Add(this.gbxMasterFields);
+            this.Name = "MasterDetailForm";
+            this.Text = "Master Detail";
+            this.Load += new System.EventHandler(this.MasterDetail_Load);
+            this.gbxMasterFields.ResumeLayout(false);
+            this.gbxMasterFields.PerformLayout();
+            this.gbxDetailFields.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvDetails)).EndInit();
+            this.ResumeLayout(false);
+
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.GroupBox gbxMasterFields;
+        private System.Windows.Forms.GroupBox gbxDetailFields;
+        
+        private System.Windows.Forms.Button btnSearch;
+
+		__LableController
+        
+        __TextBoxController
+
+        private System.Windows.Forms.DataGridView dgvDetails;
+
+
+    }
+}

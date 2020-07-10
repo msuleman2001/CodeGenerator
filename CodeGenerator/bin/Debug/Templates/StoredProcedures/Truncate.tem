@@ -1,0 +1,6 @@
+﻿__CREATEORALTER PROCEDURE __TableNameTruncate
+AS
+BEGIN
+	TRUNCATE TABLE __TableName
+END
+GO

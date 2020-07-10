@@ -1,0 +1,35 @@
+<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="__FormName.aspx.vb" Inherits="__FormName" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+
+<head runat="server">
+    <title>__FormName</title>
+</head>
+
+<body>
+
+<form id="frm__FormName" runat="server">
+
+    
+<table width="100%">
+
+__TableContainer
+
+<tr>
+<td>&nbsp;</td>
+<td>
+<asp:Button ID="cmdSave" runat="server" Text="Save" Width="80px" />
+</td>
+</tr>
+</table>
+    
+    
+
+</form>
+
+</body>
+
+</html>
+

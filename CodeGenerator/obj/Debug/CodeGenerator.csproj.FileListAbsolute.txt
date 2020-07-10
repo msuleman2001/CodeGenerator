@@ -1,0 +1,17 @@
+H:\Projects\CodeGenerator\Code\CodeGenerator2015\CodeGenerator\CodeGenerator\bin\Debug\CodeGenerator.exe
+H:\Projects\CodeGenerator\Code\CodeGenerator2015\CodeGenerator\CodeGenerator\bin\Debug\CodeGenerator.pdb
+H:\Projects\CodeGenerator\Code\CodeGenerator2015\CodeGenerator\CodeGenerator\obj\Debug\CodeGenerator.frmCodeGenerator.resources
+H:\Projects\CodeGenerator\Code\CodeGenerator2015\CodeGenerator\CodeGenerator\obj\Debug\CodeGenerator.Properties.Resources.resources
+H:\Projects\CodeGenerator\Code\CodeGenerator2015\CodeGenerator\CodeGenerator\obj\Debug\CodeGenerator.csproj.GenerateResource.Cache
+H:\Projects\CodeGenerator\Code\CodeGenerator2015\CodeGenerator\CodeGenerator\obj\Debug\CodeGenerator.exe
+H:\Projects\CodeGenerator\Code\CodeGenerator2015\CodeGenerator\CodeGenerator\obj\Debug\CodeGenerator.pdb
+H:\Projects\CodeGenerator\Code\CodeGenerator2015\CodeGenerator\CodeGenerator\obj\Debug\CodeGenerator.csprojResolveAssemblyReference.cache
+E:\Projects\CodeGenerator\Code\CodeGenerator2015\CodeGenerator\CodeGenerator\bin\Debug\CodeGenerator.exe
+E:\Projects\CodeGenerator\Code\CodeGenerator2015\CodeGenerator\CodeGenerator\bin\Debug\CodeGenerator.pdb
+E:\Projects\CodeGenerator\Code\CodeGenerator2015\CodeGenerator\CodeGenerator\obj\Debug\CodeGenerator.frmCodeGenerator.resources
+E:\Projects\CodeGenerator\Code\CodeGenerator2015\CodeGenerator\CodeGenerator\obj\Debug\CodeGenerator.Properties.Resources.resources
+E:\Projects\CodeGenerator\Code\CodeGenerator2015\CodeGenerator\CodeGenerator\obj\Debug\CodeGenerator.csproj.GenerateResource.cache
+E:\Projects\CodeGenerator\Code\CodeGenerator2015\CodeGenerator\CodeGenerator\obj\Debug\CodeGenerator.csproj.CoreCompileInputs.cache
+E:\Projects\CodeGenerator\Code\CodeGenerator2015\CodeGenerator\CodeGenerator\obj\Debug\CodeGenerator.exe
+E:\Projects\CodeGenerator\Code\CodeGenerator2015\CodeGenerator\CodeGenerator\obj\Debug\CodeGenerator.pdb
+E:\Projects\CodeGenerator\Code\CodeGenerator2015\CodeGenerator\CodeGenerator\obj\Debug\CodeGenerator.csprojAssemblyReference.cache

@@ -1,0 +1,36 @@
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="__FormName_View.aspx.vb" Inherits="__SolutionName.__FormName_View" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title>__FormName_View</title>
+</head>
+<body>
+    <form id="__FormName" runat="server">
+    
+    <table style="width:100%;">
+        <tr>
+           
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+           
+            <td>
+                <asp:GridView ID="dgv__FormName" runat="server" Width="809px">
+                </asp:GridView>
+            </td>
+        </tr>
+        <tr>
+            
+            <td>
+                <asp:Button ID="btnSave" runat="server" Text="Save" />
+                <asp:Button ID="btnClose" runat="server" Text="Close" />
+            </td>
+        </tr>
+    </table>
+    
+    </form>
+</body>
+</html>

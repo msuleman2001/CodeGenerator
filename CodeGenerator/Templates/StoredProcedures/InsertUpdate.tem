@@ -1,0 +1,24 @@
+CREATE PROCEDURE InsertUpdate__TableName
+	@__PK NUMERIC(18, 0), __SignatureColumnsList
+AS
+BEGIN
+	IF EXISTS(SELECT * FROM __TableName WHERE __PK = @__PK)
+	BEGIN
+		UPDATE __TableName
+		SET
+			__KeyValueColumns
+		WHERE
+			__PK = @__PK
+			
+			SELECT @__PK AS '__PK'
+	END
+	ELSE
+	BEGIN
+		INSERT INTO 
+			__TableName (__ColumnsList)
+		VALUES
+			(__ValuesList)
+			
+			SELECT @@IDENTITY AS '__PK'
+	END
+END

@@ -1,0 +1,8 @@
+﻿CREATE PROCEDURE __TableNameSelectAll
+AS
+BEGIN
+    SELECT 
+		__ColumnsList 
+    FROM 
+		__TableName
+END

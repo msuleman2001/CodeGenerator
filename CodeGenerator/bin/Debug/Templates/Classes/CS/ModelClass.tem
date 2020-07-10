@@ -1,0 +1,173 @@
+﻿using System;
+using System.Linq;
+using System.Text;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+using System.Collections;
+using System.Collections.Generic;
+
+public class __TableName
+{
+	List<__TableName> __TableNameList = new List<__TableName>();
+	//Database Variables///////////////////////////////////////////////////////////////////////
+	string connection_string = ConfigurationManager.AppSettings["ConnectionString"].ToString();
+	SqlConnection con__TableName;
+	SqlCommand com__TableName;
+	SqlDataAdapter da__TableName;
+	DataSet ds__TableName;
+	int intRecords;
+	///////////////////////////////////////////////////////////////////////////////////////////
+	
+	public __TableName()
+	{
+		con__TableName = new SqlConnection(connection_string);
+		com__TableName = new SqlCommand();
+		da__TableName = new SqlDataAdapter();
+		ds__TableName = new DataSet();
+	}
+	//Private Variables////////////////////////////////////////////////////////////////////////
+	
+	__PrivateVariablesList
+	///////////////////////////////////////////////////////////////////////////////////////////
+	
+	//Public Properties////////////////////////////////////////////////////////////////////////
+	__PropertiesList
+	///////////////////////////////////////////////////////////////////////////////////////////
+	
+	//Private Methods///////////////////////////////////////////////////////////////////////////
+	
+	//DB to Model//	
+	private void GenerateModelList()
+	{
+		__TableNameList.Clear();
+		foreach (DataRow dr__TableName in ds__TableName.Tables[0].Rows)
+		{
+			__TableName obj__TableName = new __TableName();
+			__DatabaseToPropertiesList
+			__TableNameList.Add(obj__TableName);
+		}
+	}
+	
+	/// <summary>
+	/// This function connect to database and execute the given stored procedure with command object
+	/// </summary>
+	/// <param name="strCommandText">Stored Procedure name</param>
+	private void ConnectAndExecute(string strCommandText)
+	{
+		ds__TableName.Clear();
+		con__TableName.Open();
+		com__TableName.Connection = con__TableName;
+		com__TableName.CommandText = strCommandText;
+		
+		com__TableName.CommandType = CommandType.StoredProcedure;
+		da__TableName.SelectCommand = com__TableName;
+		da__TableName.Fill(ds__TableName);
+		con__TableName.Close();
+	}
+	
+	/// <summary>
+	/// This function will perform "Selection" operation on database. If primary key value provied then it will return specific record else returns all records of table
+	/// </summary>
+	/// <param name="primary key">Optional primary key for spacific record</param>
+	/// <return>Retrived record from database</return>
+	public List<__TableName> __TableNameSelectAll()
+	{
+		try
+		{
+		    string sp_name = "__TableNameSelectAll";
+			ConnectAndExecute(sp_name); //no parameter will send to stored procedure
+			GenerateModelList();
+			return __TableNameList;
+		}
+		catch (Exception ex) 
+		{
+			SetError(ex.Message);
+			return null;
+		}//end try
+	}//end function
+	
+	public __TableName __TableNameSelectByID(int int__PK)
+	{
+		try
+		{
+		    string sp_name = "__TableNameSelectByID";
+			com__TableName.Parameters.AddWithValue("__PK", int__PK);
+			ConnectAndExecute(sp_name); //no parameter will send to stored procedure
+			if (ds__TableName.Tables[0].Rows.Count == 1)
+			{
+				DataRow dr__TableName = ds__TableName.Tables[0].Rows[0];
+				__TableName obj__TableName = new __TableName();
+				__DatabaseToPropertiesList
+				return obj__TableName;
+			}
+			return null;
+		}
+		catch (Exception ex) 
+		{
+			SetError(ex.Message);
+			return null;
+		}//end try
+	}//end function
+	
+	/// <summary>
+	///  To insert or update record in database. If primary key value is not given then Insert operation will be execute
+	/// </summary>
+	/// <params></params>
+	/// <return>Retrived record from database</return>
+	public Int64 InsertUpdate__TableName()
+	{
+		try
+		{
+			//parameter setting
+			__AttachedParametersList
+			//end parameter setting
+		
+			ConnectAndExecute("__TableNameInsertUpdate");
+			Int64 record_id = Convert.ToInt64(ds__TableName.Tables[0].Rows[0][0]);
+			return record_id;
+		}
+		catch (Exception ex)
+		{
+			SetError(ex.Message);
+			return 0;
+		}
+	}
+	
+	public void Delete__TableName(Int64 int__PK = 0)
+	{
+		try
+		{
+			string sp_name = "__TableNameDeleteAll";
+			if (int__PK != 0)
+			{
+				com__TableName.Parameters.AddWithValue("__PK", int__PK);
+				sp_name = "__TableNameDeleteByID";
+			}
+		
+			ConnectAndExecute(sp_name);
+		}
+		catch (Exception ex)
+		{
+			SetError(ex.Message);
+		}
+	}
+	
+	public void Truncate()
+	{
+		try
+		{
+			string sp_name = "__TableNameTruncate";
+			ConnectAndExecute(sp_name);
+		}
+		catch(Exception ex)
+		{
+			SetError(ex.Message);
+		}
+	}
+	
+	private void SetError(string message)
+	{}
+	
+	
+}

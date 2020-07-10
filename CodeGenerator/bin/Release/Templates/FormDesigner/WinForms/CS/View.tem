@@ -1,0 +1,52 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Data.SqlClient;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+
+namespace __SolutionName
+{
+    public partial class frmView__FormName : Form
+    {
+        public frmView__FormName()
+        {
+            InitializeComponent();
+        }
+
+
+        private void frmView__FormName_Load(object sender, EventArgs e)
+        {
+            ShowDataForGridView();
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+
+        }
+
+    
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+
+         public void ShowDataForGridView()
+        {
+            string strCommandString = "select * from __FormName";
+            string strConnectionString = "Data Source =__ServerName; Initial Catalog = __SolutionName; Integrated Security = SSPI;";
+			//string strConnectionString = "__ConnectionString";
+            SqlConnection objConnection = new SqlConnection(strConnectionString);
+            objConnection.Open();
+            SqlDataAdapter objDataAdapter = new SqlDataAdapter(strCommandString, objConnection);
+            DataTable objDataTable = new DataTable();
+            objDataAdapter.Fill(objDataTable);
+            dgv__FormName.DataSource = objDataTable;
+        }//end Func ShowDataForGridView
+    }
+
+}
